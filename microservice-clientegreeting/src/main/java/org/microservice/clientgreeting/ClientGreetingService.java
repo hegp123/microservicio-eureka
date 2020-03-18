@@ -2,11 +2,15 @@ package org.microservice.clientgreeting;
 
 
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 
 /**
@@ -43,16 +47,19 @@ public class ClientGreetingService {
 				+ restTemplate.getRequestFactory());
 	}
 
+	@HystrixCommand(fallbackMethod = "greetingDefault")
 	public Greeting greeting (String name) {
-	
-
 		logger.info("greeting() invoked: for " + name);
-		
 		Greeting greeting =  restTemplate.getForObject(serviceUrl + "/greeting/{name}",Greeting.class, name);
 	
 		return greeting;
 		
 	}
+	
+	public Greeting greetingDefault(String name) {
+        return new Greeting("Hello World thanks to Circuit Breaker (Hystrix)");
+
+     }
 
 	
 }
