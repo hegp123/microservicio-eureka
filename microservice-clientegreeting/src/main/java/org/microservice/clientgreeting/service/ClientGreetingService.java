@@ -1,10 +1,11 @@
-package org.microservice.clientgreeting;
+package org.microservice.clientgreeting.service;
 
 
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 
+import org.microservice.clientgreeting.model.Greeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.stereotype.Service;
